@@ -52,8 +52,7 @@
 
     import { User } from '@/models/user'
     import { createUser } from '@/api/users.db.ts'
-
-
+    
     interface DataModel {
         user: User,
         message?: string,

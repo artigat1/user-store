@@ -17,11 +17,13 @@
                     <td>{{ user.email }}</td>
                     <td>{{ user.phone }}</td>
                     <td>
-                        <router-link :to="{name: 'edit', params: { id: user.id }}"
+                        <router-link v-if="isAuthenticated"
+                                     :to="{name: 'edit', params: { id: user.id }}"
                                      class="btn btn-primary">
                             Edit
                         </router-link>
-                        <button class="btn btn-danger"
+                        <button v-if="isAuthenticated"
+                                class="btn btn-danger"
                                 @click.prevent="deleteUser(user.id)">
                             Delete
                         </button>
@@ -38,6 +40,8 @@
 
     import { User } from '@/models/user'
     import { deleteUser, getUsers } from '@/api/users.db.ts'
+    import { mapGetters } from 'vuex'
+    import { GET_IS_AUTHENTICATED } from '@/store/getters'
 
     interface DataModel {
         users: User[]
@@ -50,6 +54,12 @@
             }
         },
 
+        computed: {
+            ...mapGetters({
+                isAuthenticated: GET_IS_AUTHENTICATED,
+            }),
+        },
+
         created() {
             this.getAllUsers()
         },
@@ -58,13 +68,13 @@
             async getAllUsers(): Promise<void> {
                 try {
                     this.users = await getUsers()
-                }catch(error) {
+                } catch (error) {
                     console.error(error)
                 }
             },
 
             async deleteUser(id: any): Promise<void> {
-                if (window.confirm("Do you really want to delete?")) {
+                if (window.confirm('Do you really want to delete?')) {
                     try {
                         await deleteUser(id)
                         this.users = this.users.filter(u => u.id !== id)
