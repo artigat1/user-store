@@ -25,4 +25,4 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-./firebase.config.ts
+/src/**/firebase.config.ts
