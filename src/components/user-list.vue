@@ -3,71 +3,78 @@
         <div class="col-md-12">
             <table class="table table-striped">
                 <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="user in Users"
-                        :key="user.key">
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.phone }}</td>
-                        <td>
-                            <router-link :to="{name: 'edit', params: { id: user.key }}"
-                                         class="btn btn-primary">
-                                Edit
-                            </router-link>
-                            <button class="btn btn-danger"
-                                    @click.prevent="deleteUser(user.key)">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
+                <tr v-for="user in users"
+                    :key="user.key">
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>
+                        <router-link :to="{name: 'edit', params: { id: user.id }}"
+                                     class="btn btn-primary">
+                            Edit
+                        </router-link>
+                        <button class="btn btn-danger"
+                                @click.prevent="deleteUser(user.id)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </template>
 
-<script>
-    // import { db } from '../firebaseDb';
+<script lang="ts">
+    import Vue from 'vue'
 
-    export default {
-        data() {
+    import { User } from '@/models/user'
+    import { deleteUser, getUsers } from '@/api/users.db.ts'
+
+    interface DataModel {
+        users: User[]
+    }
+
+    export default Vue.extend({
+        data(): DataModel {
             return {
-                Users: [],
+                users: [],
             }
         },
+
         created() {
-            // db.collection('users').onSnapshot((snapshotChange) => {
-            //     this.Users = [];
-            //     snapshotChange.forEach((doc) => {
-            //         this.Users.push({
-            //             key: doc.id,
-            //             name: doc.data().name,
-            //             email: doc.data().email,
-            //             phone: doc.data().phone
-            //         })
-            //     });
-            // })
+            this.getAllUsers()
         },
+
         methods: {
-            deleteUser(id) {
-                // if (window.confirm("Do you really want to delete?")) {
-                //     db.collection("users").doc(id).delete().then(() => {
-                //         console.log("Document deleted!");
-                //     })
-                //       .catch((error) => {
-                //           console.error(error);
-                //       })
-                // }
+            async getAllUsers(): Promise<void> {
+                try {
+                    this.users = await getUsers()
+                }catch(error) {
+                    console.error(error)
+                }
+            },
+
+            async deleteUser(id: any): Promise<void> {
+                if (window.confirm("Do you really want to delete?")) {
+                    try {
+                        await deleteUser(id)
+                        this.users = this.users.filter(u => u.id !== id)
+                    } catch (error) {
+                        console.error(error)
+                    }
+                }
             },
         },
-    }
+    })
 </script>
 
 <style>
