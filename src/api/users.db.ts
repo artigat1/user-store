@@ -1,4 +1,3 @@
-import { initializeApp } from 'firebase/app'
 import FirebaseFirestore, {
     addDoc,
     collection,
@@ -6,22 +5,14 @@ import FirebaseFirestore, {
     doc,
     getDoc,
     getDocs,
-    getFirestore,
     orderBy,
     updateDoc,
     query
 } from 'firebase/firestore'
 
+import { db } from './firebase'
 import { User } from "@/models/user"
 
-const firebaseConfig = {
-    apiKey: "AIzaSyBn1axVKyNj9iIpC3czuos-CO3PJMhRO6s",
-    authDomain: "user-store-67ce3.firebaseapp.com",
-    projectId: "user-store-67ce3",
-    storageBucket: "user-store-67ce3.appspot.com",
-    messagingSenderId: "928217112617",
-    appId: "1:928217112617:web:d0ce86e6059a27d3bc7c38"
-}
 const collectionName = 'users'
 
 const userConverter = {
@@ -35,8 +26,6 @@ const userConverter = {
     }
 }
 
-const firebaseApp = initializeApp(firebaseConfig)
-const db = getFirestore(firebaseApp)
 const usersCollection = collection(db, collectionName).withConverter(userConverter)
 
 export const getUsers = async (): Promise<User[]> => {

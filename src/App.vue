@@ -6,7 +6,7 @@
                 <ul class="nav navbar-nav flex-row float-right">
                     <li class="nav-item">
                         <router-link class="nav-link pr-3"
-                                     to="/">Add User
+                                     to="/add">Add User
                         </router-link>
                     </li>
                     <li class="nav-item">

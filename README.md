@@ -1,5 +1,10 @@
 # user-store
 
+Test project that goes with this [tutorial](https://www.positronx.io/vue-js-firebase-build-vue-crud-app-with-cloud-firestore/) 
+to investigate using VueJS with Firebase (specifically Firestore as a db).
+
+The project is VueJS 2.x and uses Typescript
+
 ## Project setup
 
 ```

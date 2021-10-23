@@ -5,19 +5,19 @@ Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
     {
-        path: '/',
+        path: '/add',
         name: 'add',
         component: () => import('../components/user-create.vue'),
-    },
-    {
-        path: '/list',
-        name: 'list',
-        component: () => import('../components/user-list.vue'),
     },
     {
         path: '/edit/:id',
         name: 'edit',
         component: () => import('../components/user-edit.vue'),
+    },
+    {
+        path: '*',
+        name: 'list',
+        component: () => import('../components/user-list.vue'),
     },
 ]
 
