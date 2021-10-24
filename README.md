@@ -18,7 +18,12 @@ export const firebaseConfig = {
 }
 ```
 
-You can then build the project and run `npm run deploy` to host the app in Firebase
+You can then build the project and run `npm run deploy` to host the app in Firebase. A test version of the site can 
+also be deployed using `npm run deploy:test`. In both cases, it's deploying whatis in the `dist` folder, so make sure 
+you build first! 
+
+**NOTE:** VueX really isn't needed for a tiny project like this. I wanted to try using it with Typescript
+and that's why I included it.
 
 ## Project setup
 
