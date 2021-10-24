@@ -12,14 +12,13 @@ import { MUTATE_IS_AUTHENTICATED, MUTATE_USER } from '@/store/mutations'
 import { AuthenticatedUser } from '@/models/auth-user'
 
 onAuthStateChanged(auth, (user: any) => {
-    console.log('auth state changed', user)
     if (user) {
         store.commit(MUTATE_IS_AUTHENTICATED, true)
         const authUser: AuthenticatedUser = {
             email: user.email,
             accessToken: user.accessToken,
             id: user.uid,
-            lastLoginAt: user.metadata.lastLoginAt,
+            lastLoginAt: user.metadata.lastSignInTime,
         }
         store.commit(MUTATE_USER, authUser)
     } else {

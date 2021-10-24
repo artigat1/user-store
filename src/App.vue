@@ -3,7 +3,8 @@
         <nav class="navbar navbar-dark bg-dark justify-content-between flex-nowrap flex-row">
             <div class="container">
                 <a class="navbar-brand float-left">Firebase Vue CRUD Example</a>
-                <div class="nav navbar-nav flex-row login-info" v-if="isAuthenticated">
+                <div v-if="isAuthenticated"
+                     class="nav navbar-nav flex-row login-info">
                     {{ authUserEmail }} (last login: {{ lastLoginAt }})
                 </div>
                 <ul class="nav navbar-nav flex-row float-right gap-2">
@@ -44,6 +45,7 @@
 <script lang="ts">
     import Vue from 'vue'
     import { mapGetters } from 'vuex'
+    import { format, utcToZonedTime } from 'date-fns-tz'
 
     import { GET_IS_AUTHENTICATED, GET_USER } from '@/store/getters'
     import { logout } from '@/api/login.auth'
@@ -60,10 +62,13 @@
             },
 
             lastLoginAt(): string {
-                return this.authenticatedUser?.lastLoginAt
+                const lastLoginTimestamp = this.authenticatedUser?.lastLoginAt
+                const timestamp = new Date(lastLoginTimestamp.replace(/GMT.*$/, 'GMT+0000')).toISOString()
+                const zonedTimestamp = utcToZonedTime(timestamp, 'Europe/London')
+                return format(zonedTimestamp, 'yyyy-MM-dd HH:mm')
             }
         },
-        
+
         methods: {
             async onLogout(): Promise<void> {
                 await logout()
